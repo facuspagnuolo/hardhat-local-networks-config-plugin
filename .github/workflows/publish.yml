@@ -10,19 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Node
+      - name: Install node
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 10
       - name: Install dependencies
         run: yarn --frozen-lockfile
-      - name: Build
-        uses: borales/actions-yarn@v2.0.0
+      - name: Linter
+        run: yarn lint
+      - name: Tests
+        run: yarn test
+      - uses: JS-DevTools/npm-publish@v1
         with:
-          cmd: build
-      - name: Publish
-        uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: publish
-          auth-token: ${{ secrets.NPM_TOKEN }}
-          registry-url: registry.npmjs.org
+          token: ${{ secrets.NPM_TOKEN }}
