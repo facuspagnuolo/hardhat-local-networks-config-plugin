@@ -1,57 +1,73 @@
-# Buidler TypeScript plugin boilerplate
+[![buidler](https://buidler.dev/buidler-plugin-badge.svg?1)](https://buidler.dev)
+# buidler-local-networks-config-plugin
 
-This is a sample Buidler plugin written in TypeScript. Creating a Buidler plugin
-can be as easy as extracting a part of your config into a different file, 
-wrapping it in a function and publishing it to npm.
+Allow loading network configs for Buidler projects in home file 
 
-This sample project contains an example on how to do that, but also comes with 
-many more features:
+## What
 
-- A mocha test suit ready to use
-- TravisCI already setup
-- A package.json with scripts and publishing info
-- Examples on how to do different things
+This plugin allows you to specify a local configuration file to populate the Buidler's networks config.
+This means users can keep critical information stored locally without risking it to the project's devs or users.
+For example, you can keep your providers keys or private keys in a secured directory without exposing them.
 
 ## Installation
 
-We recommend developing Buidler plugins using yarn. To start working on your 
-project, just run
+Install dependency from NPM:
 
 ```bash
-npm install
+npm install buidler-local-networks-config-plugin @nomiclabs/buidler
 ```
 
-## Plugin development
+And add the following statement to your `buidler.config.js`:
 
-Make sure to read our [Plugin Development Guide](https://buidler.dev/guides/create-plugin.html) 
-to learn how to build a plugin, and our 
-[best practices to create high-quality plugins](https://buidler.dev/documentation/#plugin-development-best-practices).
+```js
+usePlugin('buidler-local-networks-config-plugin')
+```
 
-## Testing
+## Required plugins
 
-Running `npm run test` will run every test located in the `test/` folder. They 
-use [mocha](https://mochajs.org) and [chai](https://www.chaijs.com/), 
-but you can customize them.
+This plugin does not require any extra plugin.
 
-We recommend creating unit tests for your own modules, and integration tests for 
-the interaction of the plugin with Buidler and its dependencies.
+## Tasks
 
-## Linting and autoformat
+This plugin creates no additional tasks.
 
-All all of Buidler projects use [prettier](https://prettier.io/) and 
-[tslint](https://palantir.github.io/tslint/).
+## Environment extensions
 
-You can check if your code style is correct by running `npm run lint`, and fix 
-it with `npm run lint:fix`.
+This plugin does not perform any environment extension.
 
-## Building the project
+## Configuration
 
-Just run `npm run buidl` ️👷‍
+This plugin extends the `BuidlerConfig` object with an optional `localNetworksConfig` field.
 
-## README file
+This is an example of how to set it:
 
-This README describes this boilerplate project, but won't be very useful to your
-plugin users.
+```js
+module.exports = {
+  localNetworksConfig: '~/.buidler/networks.ts'
+}
+```
 
-Take a look at `README-TEMPLATE.md` for an example of what a Buidler plugin's
-README should look like.
+## Usage
+
+The local configuration file should support the following interface, any other field will be simply ignored:
+
+```ts
+export interface LocalNetworksConfig {
+  networks: Networks
+  defaultConfig: NetworkConfig
+}
+```
+
+Where `Networks` and `NetworkConfig` are based types defined by Buidler.
+
+In case there is a conflict between any of the local network configs, the default one, or the ones defined in your
+project, the following list of priorities will be enforced:
+
+1. Project network specific configuration
+2. Local network specific configuration
+3. Local default network configuration
+
+## TypeScript support
+
+You need to add this to your `tsconfig.json`'s `files` array: 
+`"node_modules/buidler-local-networks-config-plugin/src/type-extensions.d.ts"`

@@ -5,7 +5,7 @@
     "tslint-config-prettier"
   ],
   "rules": {
-    "prettier": true,
+    "curly": false,
     "object-literal-sort-keys": false,
     "no-submodule-imports": false,
     "interface-name": false,
@@ -19,15 +19,10 @@
       "allow-leading-underscore",
       "allow-pascal-case"
     ],
-    "ordered-imports": [
-      true,
-      {
-        "grouped-imports": true,
-        "import-sources-order": "case-insensitive"
-      }
-    ],
+    "ordered-imports": false,
     "no-floating-promises": true,
+    "prefer-object-spread": false,
     "prefer-conditional-expression": false,
-    "no-implicit-dependencies": true
+    "no-implicit-dependencies": false
   }
 }

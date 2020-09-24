@@ -1,9 +1,9 @@
 {
-  "name": "@nomiclabs/buidler-ts-plugin-boilerplate",
+  "name": "buidler-local-networks-config-plugin",
   "version": "0.0.1",
-  "description": "Buidler TypeScript plugin boilerplate",
-  "repository": "github:nomiclabs/buidler-ts-plugin-boilerplate",
-  "author": "Nomic Labs LLC",
+  "description": "Local networks config plugin for Buidler",
+  "repository": "github:facuspagnuolo/buidler-local-networks-config-plugin",
+  "author": "Facu Spagnuolo<facundo_spagnuolo@icloud.com>",
   "license": "MIT",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -13,6 +13,12 @@
     "buidler",
     "buidler-plugin"
   ],
+  "files": [
+    "dist/src/",
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "lint:fix": "prettier --write 'src/**/*.{js,ts}' 'test/**/*.{js,ts}' && tslint --fix --config tslint.json --project tsconfig.json",
     "lint": "tslint --config tslint.json --project tsconfig.json",
@@ -21,12 +27,6 @@
     "buidl": "tsc",
     "watch": "tsc -w"
   },
-  "files": [
-    "dist/src/",
-    "src/",
-    "LICENSE",
-    "README.md"
-  ],
   "devDependencies": {
     "@nomiclabs/buidler": "^1.0.1",
     "@types/chai": "^4.1.7",
@@ -38,6 +38,7 @@
     "mocha": "^5.2.0",
     "prettier": "^1.17.0",
     "source-map-support": "^0.5.12",
+    "ts-essentials": "^2.0.7",
     "ts-node": "^8.1.0",
     "tslint": "^5.16.0",
     "tslint-config-prettier": "^1.18.0",
