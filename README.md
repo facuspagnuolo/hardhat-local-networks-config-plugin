@@ -1,4 +1,6 @@
 [![buidler](https://buidler.dev/buidler-plugin-badge.svg?1)](https://buidler.dev)
+[![CI Status](https://github.com/facuspagnuolo/buidler-local-networks-config-plugin/workflows/CI/badge.svg)](https://github.com/facuspagnuolo/buidler-local-networks-config-plugin/actions)
+
 # buidler-local-networks-config-plugin
 
 Allow loading network configs for Buidler projects in home file 
@@ -47,14 +49,18 @@ module.exports = {
 }
 ```
 
+In case a `localNetworksConfig` is not provided, the plugin will try to read it from `~/.buidler/networks.json`.
+
+Note that both JS/TS and JSON formats are supported.
+
 ## Usage
 
 The local configuration file should support the following interface, any other field will be simply ignored:
 
 ```ts
 export interface LocalNetworksConfig {
-  networks: Networks
-  defaultConfig: NetworkConfig
+  networks?: Networks
+  defaultConfig?: NetworkConfig
 }
 ```
 
@@ -66,6 +72,27 @@ project, the following list of priorities will be enforced:
 1. Project network specific configuration
 2. Local network specific configuration
 3. Local default network configuration
+
+A local configuration file could look as follows:
+
+```json
+{
+  "networks": {
+    "rinkeby": {
+      "gasMultiplier": 2,
+      "accounts": "0x12..56,0xab..cd",
+      "url": "https://rinkeby.infura.io/v3/<API_KEY>"
+    },
+    "mainnet": {
+      "accounts": "0x12..56,0xab..cd",
+      "url": "https://mainnet.infura.io/v3/<API_KEY>"
+    }
+  },
+  "defaultConfig": {
+    "gasPrice": "auto"
+  }
+}
+```
 
 ## TypeScript support
 
