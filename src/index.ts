@@ -16,14 +16,14 @@ export interface LocalNetworksConfig {
 export default function() {
   extendConfig((resolvedConfig: ResolvedBuidlerConfig, userConfig: DeepReadonly<BuidlerConfig>): void => {
     if (!resolvedConfig.networks) resolvedConfig.networks = {}
-    const localNetworksConfig = loadLocalNetworksConfig(userConfig)
+    const localNetworksConfig = readLocalNetworksConfig(userConfig)
 
     const userNetworkConfigs = userConfig.networks || []
     Object.entries(userNetworkConfigs).forEach(([networkName, userNetworkConfig]) => {
       resolvedConfig.networks[networkName] = Object.assign(
         {},
         localNetworksConfig.defaultConfig,
-        localNetworksConfig.networks[networkName],
+        localNetworksConfig.networks[networkName] || {},
         userNetworkConfig
       )
     })
@@ -40,7 +40,7 @@ export default function() {
   })
 }
 
-function loadLocalNetworksConfig(userConfig: DeepReadonly<BuidlerConfig>): LocalNetworksConfig {
+export function readLocalNetworksConfig(userConfig: DeepReadonly<BuidlerConfig>): LocalNetworksConfig {
   const localNetworksConfigPath = parseLocalNetworksConfigPath(userConfig)
   const localNetworksConfig = localNetworksConfigPath ? require(localNetworksConfigPath) : {}
 
@@ -50,12 +50,20 @@ function loadLocalNetworksConfig(userConfig: DeepReadonly<BuidlerConfig>): Local
   return localNetworksConfig
 }
 
-function parseLocalNetworksConfigPath(userConfig: DeepReadonly<BuidlerConfig>): string | undefined {
+export function parseLocalNetworksConfigPath(userConfig: DeepReadonly<BuidlerConfig>): string | undefined {
   const localNetworksConfigPath = userConfig.localNetworksConfig
   if (typeof localNetworksConfigPath === 'string' && fs.existsSync(localNetworksConfigPath)) {
     return localNetworksConfigPath
   }
 
-  const defaultLocalNetworksConfigPath = path.join(homedir(), BUIDLER_CONFIG_DIR, BUIDLER_NETWORK_CONFIG_FILE)
+  const defaultLocalNetworksConfigPath = getDefaultLocalNetworksConfigPath()
   return fs.existsSync(defaultLocalNetworksConfigPath) ? defaultLocalNetworksConfigPath : undefined
+}
+
+export function getDefaultLocalNetworksConfigPath() {
+  return path.join(getLocalConfigDir(), BUIDLER_NETWORK_CONFIG_FILE)
+}
+
+export function getLocalConfigDir() {
+  return path.join(homedir(), BUIDLER_CONFIG_DIR)
 }
