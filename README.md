@@ -80,11 +80,11 @@ A local configuration file could look as follows:
   "networks": {
     "rinkeby": {
       "gasMultiplier": 2,
-      "accounts": "0x12..56,0xab..cd",
+      "accounts": ["0x12..56","0xab..cd"],
       "url": "https://rinkeby.infura.io/v3/<API_KEY>"
     },
     "mainnet": {
-      "accounts": "0x12..56,0xab..cd",
+      "accounts": ["0x12..56","0xab..cd"],
       "url": "https://mainnet.infura.io/v3/<API_KEY>"
     }
   },
