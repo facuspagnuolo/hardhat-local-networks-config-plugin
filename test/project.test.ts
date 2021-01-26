@@ -71,13 +71,13 @@ describe('local networks config plugin', function() {
       }
 
       describe('with a ts config file', () => {
-        const localConfig = require('./helpers/fixtures/local/buidler.config.ts')
+        const localConfig = require('./helpers/fixtures/local/hardhat.config.ts')
         useEnvironment(__dirname + '/helpers/fixtures/project/valid-config-ts')
         itLoadsTheLocalConfigProperly(localConfig)
       })
       
       describe('with a json config file', () => {
-        const localConfig = require('./helpers/fixtures/local/buidler.config.json')
+        const localConfig = require('./helpers/fixtures/local/hardhat.config.json')
         useEnvironment(__dirname + '/helpers/fixtures/project/valid-config-json')
         itLoadsTheLocalConfigProperly(localConfig)
       })

@@ -1,46 +1,42 @@
 import fs from 'fs'
 import path from 'path'
 import { homedir } from 'os'
-import { DeepReadonly } from 'ts-essentials'
-import { extendConfig } from '@nomiclabs/buidler/config'
-import { BuidlerConfig, NetworkConfig, Networks, ResolvedBuidlerConfig } from '@nomiclabs/buidler/types'
+import { extendConfig } from 'hardhat/config'
+import { HardhatConfig, NetworkConfig, NetworksConfig, HardhatUserConfig } from 'hardhat/types'
 
-const BUIDLER_CONFIG_DIR = '.buidler'
-const BUIDLER_NETWORK_CONFIG_FILE = 'networks.json'
+const HARDHAT_CONFIG_DIR = '.hardhat'
+const HARDHAT_NETWORK_CONFIG_FILE = 'networks.json'
 
 export interface LocalNetworksConfig {
-  networks: Networks
+  networks: NetworksConfig
   defaultConfig: NetworkConfig
 }
 
-export default function() {
-  extendConfig((resolvedConfig: ResolvedBuidlerConfig, userConfig: DeepReadonly<BuidlerConfig>): void => {
-    if (!resolvedConfig.networks) resolvedConfig.networks = {}
-    const localNetworksConfig = readLocalNetworksConfig(userConfig)
+extendConfig((hardhatConfig: HardhatConfig, userConfig: HardhatUserConfig): void => {
+  const localNetworksConfig = readLocalNetworksConfig(userConfig)
 
-    const userNetworkConfigs = userConfig.networks || []
-    Object.entries(userNetworkConfigs).forEach(([networkName, userNetworkConfig]) => {
-      resolvedConfig.networks[networkName] = Object.assign(
+  const userNetworkConfigs = userConfig.networks || []
+  Object.entries(userNetworkConfigs).forEach(([networkName, userNetworkConfig]) => {
+    hardhatConfig.networks[networkName] = Object.assign(
+      {},
+      localNetworksConfig.defaultConfig,
+      localNetworksConfig.networks[networkName] || {},
+      userNetworkConfig
+    )
+  })
+
+  Object.entries(localNetworksConfig.networks).forEach(([networkName, localNetworkConfig]) => {
+    if (!hardhatConfig.networks[networkName]) {
+      hardhatConfig.networks[networkName] = Object.assign(
         {},
         localNetworksConfig.defaultConfig,
-        localNetworksConfig.networks[networkName] || {},
-        userNetworkConfig
+        localNetworkConfig
       )
-    })
-
-    Object.entries(localNetworksConfig.networks).forEach(([networkName, localNetworkConfig]) => {
-      if (!resolvedConfig.networks[networkName]) {
-        resolvedConfig.networks[networkName] = Object.assign(
-          {},
-          localNetworksConfig.defaultConfig,
-          localNetworkConfig
-        )
-      }
-    })
+    }
   })
-}
+});
 
-export function readLocalNetworksConfig(userConfig: DeepReadonly<BuidlerConfig>): LocalNetworksConfig {
+export function readLocalNetworksConfig(userConfig: HardhatUserConfig): LocalNetworksConfig {
   const localNetworksConfigPath = parseLocalNetworksConfigPath(userConfig)
   const localNetworksConfig = localNetworksConfigPath ? require(localNetworksConfigPath) : {}
 
@@ -50,7 +46,7 @@ export function readLocalNetworksConfig(userConfig: DeepReadonly<BuidlerConfig>)
   return localNetworksConfig
 }
 
-export function parseLocalNetworksConfigPath(userConfig: DeepReadonly<BuidlerConfig>): string | undefined {
+export function parseLocalNetworksConfigPath(userConfig: HardhatUserConfig): string | undefined {
   const localNetworksConfigPath = userConfig.localNetworksConfig
   if (typeof localNetworksConfigPath === 'string' && fs.existsSync(localNetworksConfigPath)) {
     return localNetworksConfigPath
@@ -61,9 +57,9 @@ export function parseLocalNetworksConfigPath(userConfig: DeepReadonly<BuidlerCon
 }
 
 export function getDefaultLocalNetworksConfigPath() {
-  return path.join(getLocalConfigDir(), BUIDLER_NETWORK_CONFIG_FILE)
+  return path.join(getLocalConfigDir(), HARDHAT_NETWORK_CONFIG_FILE)
 }
 
 export function getLocalConfigDir() {
-  return path.join(homedir(), BUIDLER_CONFIG_DIR)
+  return path.join(homedir(), HARDHAT_CONFIG_DIR)
 }

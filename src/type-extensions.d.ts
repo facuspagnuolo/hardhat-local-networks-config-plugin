@@ -1,7 +1,7 @@
-import '@nomiclabs/buidler/types'
+import 'hardhat/types'
 
-declare module '@nomiclabs/buidler/types' {
-  export interface BuidlerConfig {
+declare module 'hardhat/types' {
+  export interface HardhatUserConfig {
     localNetworksConfig?: string
   }
 }

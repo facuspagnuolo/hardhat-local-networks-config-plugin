@@ -1,4 +1,5 @@
 module.exports = {
+  solidity: '0.7.3',
   defaultConfig: {
     url: 'https://default',
     someDefaultValue: 1

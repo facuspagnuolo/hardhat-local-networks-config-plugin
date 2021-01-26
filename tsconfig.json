@@ -10,7 +10,7 @@
     "rootDirs": ["./src", "./test"],
     "esModuleInterop": true
   },
-  // "files": [], // Any Buidler plugin's main .d.ts has to be added here
+  // "files": [], // Any Hardhat plugin's main .d.ts has to be added here
   "exclude": ["dist", "node_modules"],
   "include": [
     "./test",

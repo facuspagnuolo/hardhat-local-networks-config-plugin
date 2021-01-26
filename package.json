@@ -1,8 +1,8 @@
 {
-  "name": "buidler-local-networks-config-plugin",
+  "name": "hardhat-local-networks-config-plugin",
   "version": "0.0.1",
-  "description": "Local networks config plugin for Buidler",
-  "repository": "github:facuspagnuolo/buidler-local-networks-config-plugin",
+  "description": "Local networks config plugin for Hardhat",
+  "repository": "github:facuspagnuolo/hardhat-local-networks-config-plugin",
   "author": "Facu Spagnuolo<facundo_spagnuolo@icloud.com>",
   "license": "MIT",
   "main": "dist/src/index.js",
@@ -10,8 +10,8 @@
   "keywords": [
     "ethereum",
     "smart-contracts",
-    "buidler",
-    "buidler-plugin"
+    "hardhat",
+    "hardhat-plugin"
   ],
   "files": [
     "dist/src/",
@@ -28,7 +28,7 @@
     "watch": "tsc -w"
   },
   "devDependencies": {
-    "@nomiclabs/buidler": "^1.0.1",
+    "hardhat": "^2.0.8",
     "@types/chai": "^4.1.7",
     "@types/fs-extra": "^5.0.4",
     "@types/mocha": "^5.2.5",
@@ -46,6 +46,6 @@
     "typescript": "^3.4.5"
   },
   "peerDependencies": {
-    "@nomiclabs/buidler": "^1.0.1"
+    "hardhat": "^2.0.8"
   }
 }

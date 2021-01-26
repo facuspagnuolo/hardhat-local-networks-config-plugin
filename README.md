@@ -1,13 +1,13 @@
-[![buidler](https://buidler.dev/buidler-plugin-badge.svg?1)](https://buidler.dev)
-[![CI Status](https://github.com/facuspagnuolo/buidler-local-networks-config-plugin/workflows/CI/badge.svg)](https://github.com/facuspagnuolo/buidler-local-networks-config-plugin/actions)
+[![hardhat](https://buidler.dev/hardhat-plugin-badge.svg?1)](https://hardhat.org)
+[![CI Status](https://github.com/facuspagnuolo/hardhat-local-networks-config-plugin/workflows/CI/badge.svg)](https://github.com/facuspagnuolo/hardhat-local-networks-config-plugin/actions)
 
-# buidler-local-networks-config-plugin
+# hardhat-local-networks-config-plugin
 
-Allow loading network configs for Buidler projects in home file 
+Allow loading network configs for Hardhat projects in home file 
 
 ## What
 
-This plugin allows you to specify a local configuration file to populate the Buidler's networks config.
+This plugin allows you to specify a local configuration file to populate the Hardhat's networks config.
 This means users can keep critical information stored locally without risking it to the project's devs or users.
 For example, you can keep your providers keys or private keys in a secured directory without exposing them.
 
@@ -16,13 +16,13 @@ For example, you can keep your providers keys or private keys in a secured direc
 Install dependency from NPM:
 
 ```bash
-npm install buidler-local-networks-config-plugin @nomiclabs/buidler
+npm install hardhat-local-networks-config-plugin hardhat
 ```
 
-And add the following statement to your `buidler.config.js`:
+And add the following statement to your `hardhat.config.js`:
 
 ```js
-usePlugin('buidler-local-networks-config-plugin')
+usePlugin('hardhat-local-networks-config-plugin')
 ```
 
 ## Required plugins
@@ -39,17 +39,17 @@ This plugin does not perform any environment extension.
 
 ## Configuration
 
-This plugin extends the `BuidlerConfig` object with an optional `localNetworksConfig` field.
+This plugin extends the `HardhatUserConfig` object with an optional `localNetworksConfig` field.
 
 This is an example of how to set it:
 
 ```js
 module.exports = {
-  localNetworksConfig: '~/.buidler/networks.ts'
+  localNetworksConfig: '~/.hardhat/networks.ts'
 }
 ```
 
-In case a `localNetworksConfig` is not provided, the plugin will try to read it from `~/.buidler/networks.json`.
+In case a `localNetworksConfig` is not provided, the plugin will try to read it from `~/.hardhat/networks.json`.
 
 Note that both JS/TS and JSON formats are supported.
 
@@ -59,12 +59,12 @@ The local configuration file should support the following interface, any other f
 
 ```ts
 export interface LocalNetworksConfig {
-  networks?: Networks
+  networks?: NetworksConfig
   defaultConfig?: NetworkConfig
 }
 ```
 
-Where `Networks` and `NetworkConfig` are based types defined by Buidler.
+Where `NetworksConfig` and `NetworkConfig` are based types defined by Hardhat.
 
 In case there is a conflict between any of the local network configs, the default one, or the ones defined in your
 project, the following list of priorities will be enforced:
@@ -97,4 +97,4 @@ A local configuration file could look as follows:
 ## TypeScript support
 
 You need to add this to your `tsconfig.json`'s `files` array: 
-`"node_modules/buidler-local-networks-config-plugin/src/type-extensions.d.ts"`
+`"node_modules/hardhat-local-networks-config-plugin/src/type-extensions.d.ts"`

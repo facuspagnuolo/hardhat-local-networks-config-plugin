@@ -1,12 +1,8 @@
-// We load the plugin here.
-// We recommend using loadPluginFile in tests, as using usePlugin from within
-// a plugin can interfere with any build step you have (e.g. TypeScript).
-import { loadPluginFile } from '@nomiclabs/buidler/plugins-testing'
-import path from 'path'
-loadPluginFile(__dirname + '/../../../../../src/index')
+import "../../../../../src/index";
 
 module.exports = {
-  localNetworksConfig: __dirname + '/../../local/buidler.config.ts',
+  solidity: '0.7.3',
+  localNetworksConfig: __dirname + '/../../local/hardhat.config.json',
   networks: {
     shouldNotBeOverridden: {
       a: 1,
