@@ -1,4 +1,4 @@
-[![hardhat](https://buidler.dev/hardhat-plugin-badge.svg?1)](https://hardhat.org)
+[![hardhat](https://hardhat.org/buidler-plugin-badge.svg?1)](https://hardhat.org)
 [![CI Status](https://github.com/facuspagnuolo/hardhat-local-networks-config-plugin/workflows/CI/badge.svg)](https://github.com/facuspagnuolo/hardhat-local-networks-config-plugin/actions)
 
 # hardhat-local-networks-config-plugin
