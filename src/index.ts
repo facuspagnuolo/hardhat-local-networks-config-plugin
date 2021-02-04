@@ -19,6 +19,7 @@ extendConfig((hardhatConfig: HardhatConfig, userConfig: HardhatUserConfig): void
   Object.entries(userNetworkConfigs).forEach(([networkName, userNetworkConfig]) => {
     hardhatConfig.networks[networkName] = Object.assign(
       {},
+      hardhatConfig.networks[networkName],
       localNetworksConfig.defaultConfig,
       localNetworksConfig.networks[networkName] || {},
       userNetworkConfig
@@ -29,6 +30,7 @@ extendConfig((hardhatConfig: HardhatConfig, userConfig: HardhatUserConfig): void
     if (!hardhatConfig.networks[networkName]) {
       hardhatConfig.networks[networkName] = Object.assign(
         {},
+        hardhatConfig.networks[networkName],
         localNetworksConfig.defaultConfig,
         localNetworkConfig
       )

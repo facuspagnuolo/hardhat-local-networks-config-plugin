@@ -1,13 +1,23 @@
 import { assert } from 'chai'
 import { useEnvironment } from './helpers'
 
+const DEFAULTS = {
+  accounts: 'remote',
+  gas: 'auto',
+  gasMultiplier: 1,
+  gasPrice: 'auto',
+  httpHeaders: {},
+  timeout: 20000
+}
+
 describe('local networks config plugin', function() {
   describe('when there is no local config path', () => {
     useEnvironment(__dirname + '/helpers/fixtures/project/invalid-config')
 
     it('should not override any network config', function() {
       Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
-        assert.deepStrictEqual(userNetworkConfig, this.resolvedNetworks[networkName])
+        const expectedConfig = Object.assign({}, DEFAULTS, userNetworkConfig);
+        assert.deepStrictEqual(this.resolvedNetworks[networkName], expectedConfig)
       })
     })
   })
@@ -18,7 +28,8 @@ describe('local networks config plugin', function() {
 
       it('should not override any network config', function() {
         Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
-          assert.deepStrictEqual(userNetworkConfig, this.resolvedNetworks[networkName])
+          const expectedConfig = Object.assign({}, DEFAULTS, userNetworkConfig);
+          assert.deepStrictEqual(this.resolvedNetworks[networkName], expectedConfig)
         })
       })
     })
@@ -28,7 +39,8 @@ describe('local networks config plugin', function() {
 
       it('should not override any network config', function() {
         Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
-          assert.deepStrictEqual(userNetworkConfig, this.resolvedNetworks[networkName])
+          const expectedConfig = Object.assign({}, DEFAULTS, userNetworkConfig);
+          assert.deepStrictEqual(this.resolvedNetworks[networkName], expectedConfig)
         })
       })
     })
@@ -36,11 +48,13 @@ describe('local networks config plugin', function() {
     describe('when the given local config path is valid', () => {
       const itLoadsTheLocalConfigProperly = (localConfig: any) => {
         it('should prioritize project config over local config', function() {
-          assert.deepStrictEqual(this.resolvedNetworks.shouldNotBeOverridden, this.userNetworks.shouldNotBeOverridden)
+          const expectedConfig = Object.assign({}, DEFAULTS, this.userNetworks.shouldNotBeOverridden);
+          assert.deepStrictEqual(this.resolvedNetworks.shouldNotBeOverridden, expectedConfig)
         })
 
         it('should extend project config with local config', function() {
           assert.deepStrictEqual(this.resolvedNetworks.shouldBeExtended, {
+            ...DEFAULTS,
             ...localConfig.defaultConfig,
             ...localConfig.networks.shouldBeExtended,
             ...this.userNetworks.shouldBeExtended
@@ -49,6 +63,7 @@ describe('local networks config plugin', function() {
 
         it('should extend project config with local config prioritizing project config', function() {
           assert.deepStrictEqual(this.resolvedNetworks.shouldBePartiallyExtended, {
+            ...DEFAULTS,
             ...localConfig.defaultConfig,
             ...localConfig.networks.shouldBePartiallyExtended,
             ...this.userNetworks.shouldBePartiallyExtended
@@ -64,6 +79,7 @@ describe('local networks config plugin', function() {
 
         it('should extend project config with local default config', function() {
           assert.deepStrictEqual(this.resolvedNetworks.shouldBeOverriddenByDefaultConfig, {
+            ...DEFAULTS,
             ...localConfig.defaultConfig,
             ...this.userNetworks.shouldBeOverriddenByDefaultConfig
           })
