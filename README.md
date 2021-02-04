@@ -22,7 +22,13 @@ npm install hardhat-local-networks-config-plugin hardhat
 And add the following statement to your `hardhat.config.js`:
 
 ```js
-usePlugin('hardhat-local-networks-config-plugin')
+require('hardhat-local-networks-config-plugin')
+```
+
+Or, if you are using TypeScript, add this to your hardhat.config.ts:
+
+```ts
+import 'hardhat-local-networks-config-plugin';
 ```
 
 ## Required plugins
