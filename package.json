@@ -1,6 +1,6 @@
 {
   "name": "hardhat-local-networks-config-plugin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Local networks config plugin for Hardhat",
   "repository": "github:facuspagnuolo/hardhat-local-networks-config-plugin",
   "author": "Facu Spagnuolo<facundo_spagnuolo@icloud.com>",
