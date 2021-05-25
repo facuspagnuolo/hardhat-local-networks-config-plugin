@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { homedir } from 'os'
+import deepmerge from 'deepmerge'
 import { extendConfig } from 'hardhat/config'
 import { HardhatConfig, NetworkConfig, NetworksConfig, HardhatUserConfig } from 'hardhat/types'
 
@@ -17,23 +18,21 @@ extendConfig((hardhatConfig: HardhatConfig, userConfig: HardhatUserConfig): void
 
   const userNetworkConfigs = userConfig.networks || []
   Object.entries(userNetworkConfigs).forEach(([networkName, userNetworkConfig]) => {
-    hardhatConfig.networks[networkName] = Object.assign(
-      {},
-      hardhatConfig.networks[networkName],
+    hardhatConfig.networks[networkName] = <NetworkConfig> deepmerge.all([
+      hardhatConfig.networks[networkName] || {},
       localNetworksConfig.defaultConfig,
       localNetworksConfig.networks[networkName] || {},
-      userNetworkConfig
-    )
+      userNetworkConfig as object
+    ])
   })
 
   Object.entries(localNetworksConfig.networks).forEach(([networkName, localNetworkConfig]) => {
     if (!hardhatConfig.networks[networkName]) {
-      hardhatConfig.networks[networkName] = Object.assign(
-        {},
-        hardhatConfig.networks[networkName],
+      hardhatConfig.networks[networkName] = <NetworkConfig> deepmerge.all([
+        hardhatConfig.networks[networkName] || {},
         localNetworksConfig.defaultConfig,
         localNetworkConfig
-      )
+      ])
     }
   })
 });
