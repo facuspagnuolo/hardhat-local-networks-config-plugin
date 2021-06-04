@@ -18,21 +18,21 @@ extendConfig((hardhatConfig: HardhatConfig, userConfig: HardhatUserConfig): void
 
   const userNetworkConfigs = userConfig.networks || []
   Object.entries(userNetworkConfigs).forEach(([networkName, userNetworkConfig]) => {
-    hardhatConfig.networks[networkName] = <NetworkConfig> deepmerge.all([
+    hardhatConfig.networks[networkName] = (deepmerge.all([
       hardhatConfig.networks[networkName] || {},
       localNetworksConfig.defaultConfig,
       localNetworksConfig.networks[networkName] || {},
       userNetworkConfig as object
-    ])
+    ]) as NetworkConfig)
   })
 
   Object.entries(localNetworksConfig.networks).forEach(([networkName, localNetworkConfig]) => {
     if (!hardhatConfig.networks[networkName]) {
-      hardhatConfig.networks[networkName] = <NetworkConfig> deepmerge.all([
+      hardhatConfig.networks[networkName] = (deepmerge.all([
         hardhatConfig.networks[networkName] || {},
         localNetworksConfig.defaultConfig,
         localNetworkConfig
-      ])
+      ]) as NetworkConfig)
     }
   })
 });
