@@ -3,6 +3,7 @@ import { HardhatPluginError } from 'hardhat/plugins'
 import { resetHardhatContext } from 'hardhat/plugins-testing'
 import { useEnvironment } from './helpers'
 import path from 'path'
+// tslint:disable-next-line
 const mock = require('mock-os')
 
 const DEFAULTS = {
