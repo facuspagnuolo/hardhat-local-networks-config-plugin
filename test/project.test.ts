@@ -130,6 +130,29 @@ describe('local networks config plugin', function() {
     })
 
     describe('when the given local config path is valid', () => {
+      context('when the given local config file is empty', () => {
+        useEnvironment('empty-config')
+
+        it('should not override any network config', function () {
+          Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
+            const expectedConfig = Object.assign({}, DEFAULTS, userNetworkConfig)
+            assert.deepStrictEqual(this.resolvedNetworks[networkName], expectedConfig)
+          })
+        })
+      })
+
+      context('when networks are not defined in project config', () => {
+        useEnvironment('no-networks')
+        const localConfig = require('./helpers/fixtures/local/networks.json')
+
+        it('should load networks from local config', function () {
+          Object.entries(localConfig.networks).forEach(([networkName, userNetworkConfig]) => {
+            const expectedConfig = Object.assign({}, localConfig.defaultConfig, userNetworkConfig)
+            assert.deepStrictEqual(this.resolvedNetworks[networkName], expectedConfig)
+          })
+        })
+      })
+
       const itLoadsTheLocalConfigProperly = (localConfig: any) => {
         it('should prioritize local config over project config', function () {
           const expectedConfig = Object.assign(
@@ -180,7 +203,7 @@ describe('local networks config plugin', function() {
         useEnvironment('valid-config-ts')
         itLoadsTheLocalConfigProperly(localConfig)
       })
-      
+
       describe('with a json config file', () => {
         const localConfig = require('./helpers/fixtures/local/networks.json')
         useEnvironment('valid-config-json')
