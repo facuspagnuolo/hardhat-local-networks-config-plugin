@@ -1,8 +1,7 @@
 module.exports = {
-  solidity: '0.7.3',
   defaultConfig: {
-    url: 'https://default',
-    someDefaultValue: 1
+    url: 'https://default-from-local',
+    someDefaultValue: 'def2',
   },
   networks: {
     shouldNotBeOverridden: {},
@@ -13,13 +12,14 @@ module.exports = {
     },
     shouldBePartiallyExtended: {
       a: 100,
-      b: 'b',
-      c: false,
+      d: 'tc33',
+      f: 'tc63',
+      g: 'tc73',
     },
     shouldBeCopiedFromLocalConfig: {
       x: 'a',
       y: 2,
       z: true,
-    }
-  }
+    },
+  },
 }

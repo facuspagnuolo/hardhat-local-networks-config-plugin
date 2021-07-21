@@ -1,0 +1,25 @@
+{
+  "defaultConfig": {
+    "url": "https://default-from-home",
+    "someDefaultValue": "def1"
+  },
+  "networks": {
+    "shouldNotBeOverridden": {},
+    "shouldBeExtended": {
+      "f": 10,
+      "g": "a",
+      "h": true
+    },
+    "shouldBePartiallyExtended": {
+      "a": 10,
+      "b": "tc21",
+      "e": "tc51",
+      "g": "tc71"
+    },
+    "shouldBeCopiedFromHomeConfig": {
+      "m": "z",
+      "n": 13,
+      "o": true
+    }
+  }
+}
