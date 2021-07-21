@@ -14,12 +14,15 @@ export interface LocalNetworksConfig {
 }
 
 extendConfig((hardhatConfig: HardhatConfig, userConfig: HardhatUserConfig): void => {
+  const homeLocalNetworksConfig = readHomeNetworksConfig()
   const localNetworksConfig = readLocalNetworksConfig(userConfig)
 
   const userNetworkConfigs = userConfig.networks || []
   Object.entries(userNetworkConfigs).forEach(([networkName, userNetworkConfig]) => {
     hardhatConfig.networks[networkName] = (deepmerge.all([
       hardhatConfig.networks[networkName] || {},
+      homeLocalNetworksConfig.defaultConfig,
+      homeLocalNetworksConfig.networks[networkName] || {},
       localNetworksConfig.defaultConfig,
       localNetworksConfig.networks[networkName] || {},
       userNetworkConfig as object
@@ -30,12 +33,34 @@ extendConfig((hardhatConfig: HardhatConfig, userConfig: HardhatUserConfig): void
     if (!hardhatConfig.networks[networkName]) {
       hardhatConfig.networks[networkName] = (deepmerge.all([
         hardhatConfig.networks[networkName] || {},
+        homeLocalNetworksConfig.defaultConfig,
         localNetworksConfig.defaultConfig,
-        localNetworkConfig
+        localNetworkConfig as object,
+      ]) as NetworkConfig)
+    }
+  })
+
+  Object.entries(homeLocalNetworksConfig.networks).forEach(([networkName, localNetworkConfig]) => {
+    if (!hardhatConfig.networks[networkName]) {
+      hardhatConfig.networks[networkName] = (deepmerge.all([
+        hardhatConfig.networks[networkName] || {},
+        homeLocalNetworksConfig.defaultConfig,
+        localNetworksConfig.defaultConfig,
+        localNetworkConfig as object,
       ]) as NetworkConfig)
     }
   })
 });
+
+export function readHomeNetworksConfig(): LocalNetworksConfig {
+  const configPath = getDefaultHomeNetworksConfigPath()
+  const networksConfig = fs.existsSync(configPath) ? require(configPath) : {}
+
+  if (!networksConfig.networks) networksConfig.networks = []
+  if (!networksConfig.defaultConfig) networksConfig.defaultConfig = {}
+
+  return networksConfig
+}
 
 export function readLocalNetworksConfig(userConfig: HardhatUserConfig): LocalNetworksConfig {
   const localNetworksConfigPath = parseLocalNetworksConfigPath(userConfig)
@@ -52,9 +77,14 @@ export function parseLocalNetworksConfigPath(userConfig: HardhatUserConfig): str
   if (typeof localNetworksConfigPath === 'string' && fs.existsSync(localNetworksConfigPath)) {
     return localNetworksConfigPath
   }
+}
 
-  const defaultLocalNetworksConfigPath = getDefaultLocalNetworksConfigPath()
-  return fs.existsSync(defaultLocalNetworksConfigPath) ? defaultLocalNetworksConfigPath : undefined
+export function getDefaultHomeNetworksConfigPath() {
+  return path.join(getHomeConfigDir(), HARDHAT_NETWORK_CONFIG_FILE)
+}
+
+export function getHomeConfigDir() {
+  return path.join(homedir(), HARDHAT_CONFIG_DIR)
 }
 
 export function getDefaultLocalNetworksConfigPath() {

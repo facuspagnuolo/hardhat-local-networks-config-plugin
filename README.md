@@ -77,7 +77,7 @@ project, the following list of priorities will be enforced:
 
 1. Project network specific configuration
 2. Local network specific configuration
-3. Local default network configuration
+3. Local default network configuration (`~/.hardhat/networks.json`)
 
 A local configuration file could look as follows:
 
