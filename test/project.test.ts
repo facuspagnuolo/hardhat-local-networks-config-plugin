@@ -14,7 +14,7 @@ const DEFAULTS = {
 
 describe('local networks config plugin', function() {
   describe('when there is invalid local config path', () => {
-    useEnvironment(__dirname + '/helpers/fixtures/project/invalid-config')
+    useEnvironment('invalid-config')
 
     it('should not override any network config', function() {
       Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
@@ -25,7 +25,7 @@ describe('local networks config plugin', function() {
   })
 
   describe('when there is no local config path', () => {
-    useEnvironment(__dirname + '/helpers/fixtures/project/no-config')
+    useEnvironment('no-config')
 
     context('when there is no default config in home dir', () => {
       it('should not override any network config', function () {
@@ -91,7 +91,7 @@ describe('local networks config plugin', function() {
 
   describe('when there is a local config path', () => {
     describe('when the given local config path is not valid', () => {
-      useEnvironment(__dirname + '/helpers/fixtures/project/invalid-config')
+      useEnvironment('invalid-config')
 
       it('should not override any network config', function() {
         Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
@@ -102,7 +102,7 @@ describe('local networks config plugin', function() {
     })
 
     describe('when the given local config path is missing', () => {
-      useEnvironment(__dirname + '/helpers/fixtures/project/missing-config')
+      useEnvironment('missing-config')
 
       it('should not override any network config', function() {
         Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
@@ -155,13 +155,13 @@ describe('local networks config plugin', function() {
 
       describe('with a ts config file', () => {
         const localConfig = require('./helpers/fixtures/local/networks.ts')
-        useEnvironment(__dirname + '/helpers/fixtures/project/valid-config-ts')
+        useEnvironment('valid-config-ts')
         itLoadsTheLocalConfigProperly(localConfig)
       })
       
       describe('with a json config file', () => {
         const localConfig = require('./helpers/fixtures/local/networks.json')
-        useEnvironment(__dirname + '/helpers/fixtures/project/valid-config-json')
+        useEnvironment('valid-config-json')
         itLoadsTheLocalConfigProperly(localConfig)
       })
     })
