@@ -1,5 +1,7 @@
 import { assert } from 'chai'
 import { useEnvironment } from './helpers'
+import path from 'path'
+const mock = require('mock-os')
 
 const DEFAULTS = {
   accounts: 'remote',
@@ -11,13 +13,78 @@ const DEFAULTS = {
 }
 
 describe('local networks config plugin', function() {
-  describe('when there is no local config path', () => {
+  describe('when there is invalid local config path', () => {
     useEnvironment(__dirname + '/helpers/fixtures/project/invalid-config')
 
     it('should not override any network config', function() {
       Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
         const expectedConfig = Object.assign({}, DEFAULTS, userNetworkConfig);
         assert.deepStrictEqual(this.resolvedNetworks[networkName], expectedConfig)
+      })
+    })
+  })
+
+  describe('when there is no local config path', () => {
+    useEnvironment(__dirname + '/helpers/fixtures/project/no-config')
+
+    context('when there is no default config in home dir', () => {
+      it('should not override any network config', function () {
+        Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
+          const expectedConfig = Object.assign({}, DEFAULTS, userNetworkConfig)
+          assert.deepStrictEqual(this.resolvedNetworks[networkName], expectedConfig)
+        })
+      })
+    })
+
+    context('when there is default config in home dir', () => {
+      before('mock homedir', () => {
+        mock({ homedir: path.join(__dirname, './helpers/fixtures/homedir') })
+      })
+
+      after(() => {
+        mock.restore()
+      })
+
+      const homeConfig = require('./helpers/fixtures/homedir/.hardhat/networks.json')
+
+      it('should prioritize project config over home config', function () {
+        const expectedConfig = Object.assign({}, DEFAULTS, this.userNetworks.shouldNotBeOverridden)
+        assert.deepStrictEqual(this.resolvedNetworks.shouldNotBeOverridden, expectedConfig)
+      })
+
+      it('should extend project config with home config', function () {
+        const expectedConfig = {
+          ...DEFAULTS,
+          ...homeConfig.defaultConfig,
+          ...homeConfig.networks.shouldBeExtended,
+          ...this.userNetworks.shouldBeExtended,
+        }
+
+        assert.deepStrictEqual(this.resolvedNetworks.shouldBeExtended, expectedConfig)
+      })
+
+      it('should extend project config with home config prioritizing project config', function () {
+        assert.deepStrictEqual(this.resolvedNetworks.shouldBePartiallyExtended, {
+          ...DEFAULTS,
+          ...homeConfig.defaultConfig,
+          ...homeConfig.networks.shouldBePartiallyExtended,
+          ...this.userNetworks.shouldBePartiallyExtended,
+        })
+      })
+
+      it('should copy home configs', function () {
+        assert.deepStrictEqual(this.resolvedNetworks.shouldBeCopiedFromHomeConfig, {
+          ...homeConfig.defaultConfig,
+          ...homeConfig.networks.shouldBeCopiedFromHomeConfig,
+        })
+      })
+
+      it('should extend project config with home default config', function () {
+        assert.deepStrictEqual(this.resolvedNetworks.shouldNotBeOverriddenByHomeDefaultConfig, {
+          ...DEFAULTS,
+          ...homeConfig.defaultConfig,
+          ...this.userNetworks.shouldNotBeOverriddenByHomeDefaultConfig,
+        })
       })
     })
   })
