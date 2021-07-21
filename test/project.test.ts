@@ -78,22 +78,22 @@ describe('local networks config plugin', function() {
         })
 
         it('should extend project config with local default config', function() {
-          assert.deepStrictEqual(this.resolvedNetworks.shouldBeOverriddenByDefaultConfig, {
+          assert.deepStrictEqual(this.resolvedNetworks.shouldNotBeOverriddenByLocalDefaultConfig, {
             ...DEFAULTS,
             ...localConfig.defaultConfig,
-            ...this.userNetworks.shouldBeOverriddenByDefaultConfig
+            ...this.userNetworks.shouldNotBeOverriddenByLocalDefaultConfig,
           })
         })
       }
 
       describe('with a ts config file', () => {
-        const localConfig = require('./helpers/fixtures/local/hardhat.config.ts')
+        const localConfig = require('./helpers/fixtures/local/networks.ts')
         useEnvironment(__dirname + '/helpers/fixtures/project/valid-config-ts')
         itLoadsTheLocalConfigProperly(localConfig)
       })
       
       describe('with a json config file', () => {
-        const localConfig = require('./helpers/fixtures/local/hardhat.config.json')
+        const localConfig = require('./helpers/fixtures/local/networks.json')
         useEnvironment(__dirname + '/helpers/fixtures/project/valid-config-json')
         itLoadsTheLocalConfigProperly(localConfig)
       })

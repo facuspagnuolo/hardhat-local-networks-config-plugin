@@ -1,24 +1,25 @@
 {
   "defaultConfig": {
-    "url": "https://default",
-    "someDefaultValue": 1
+    "url": "https://default-from-home",
+    "someDefaultValue": "def1"
   },
   "networks": {
     "shouldNotBeOverridden": {},
     "shouldBeExtended": {
-      "a": 100,
-      "b": "b",
-      "c": false
+      "f": 10,
+      "g": "a",
+      "h": true
     },
     "shouldBePartiallyExtended": {
-      "a": 100,
-      "b": "b",
-      "c": false
+      "a": 10,
+      "b": "tc21",
+      "e": "tc51",
+      "g": "tc71"
     },
-    "shouldBeCopiedFromLocalConfig": {
-      "x": "a",
-      "y": 2,
-      "z": true
+    "shouldBeCopiedFromHomeConfig": {
+      "m": "z",
+      "n": 13,
+      "o": true
     }
   }
 }
