@@ -1,4 +1,6 @@
 import { assert } from 'chai'
+import { HardhatPluginError } from 'hardhat/plugins'
+import { resetHardhatContext } from 'hardhat/plugins-testing'
 import { useEnvironment } from './helpers'
 import path from 'path'
 const mock = require('mock-os')
@@ -93,22 +95,37 @@ describe('local networks config plugin', function() {
     describe('when the given local config path is not valid', () => {
       useEnvironment('invalid-config')
 
-      it('should not override any network config', function() {
+      it('should not override any network config', function () {
         Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
-          const expectedConfig = Object.assign({}, DEFAULTS, userNetworkConfig);
+          const expectedConfig = Object.assign({}, DEFAULTS, userNetworkConfig)
           assert.deepStrictEqual(this.resolvedNetworks[networkName], expectedConfig)
         })
       })
     })
 
     describe('when the given local config path is missing', () => {
-      useEnvironment('missing-config')
+      let previousCWD: string
 
-      it('should not override any network config', function() {
-        Object.entries(this.userNetworks).forEach(([networkName, userNetworkConfig]) => {
-          const expectedConfig = Object.assign({}, DEFAULTS, userNetworkConfig);
-          assert.deepStrictEqual(this.resolvedNetworks[networkName], expectedConfig)
-        })
+      before(function () {
+        const projectPath = __dirname + '/helpers/fixtures/project/missing-config'
+
+        previousCWD = process.cwd()
+        process.chdir(projectPath)
+      })
+
+      after(function () {
+        resetHardhatContext()
+        process.chdir(previousCWD)
+      })
+
+      it('should throw an error', function () {
+        assert.throws(
+          () => {
+            this.hre = require('hardhat')
+          },
+          HardhatPluginError,
+          'configuration file not found under "localNetworksConfig" path: ~/xyz/networks.ts;'
+        )
       })
     })
 
