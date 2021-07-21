@@ -114,8 +114,13 @@ describe('local networks config plugin', function() {
 
     describe('when the given local config path is valid', () => {
       const itLoadsTheLocalConfigProperly = (localConfig: any) => {
-        it('should prioritize project config over local config', function() {
-          const expectedConfig = Object.assign({}, DEFAULTS, this.userNetworks.shouldNotBeOverridden);
+        it('should prioritize local config over project config', function () {
+          const expectedConfig = Object.assign(
+            {},
+            DEFAULTS,
+            this.userNetworks.shouldNotBeOverridden,
+            localConfig.shouldNotBeOverridden
+          )
           assert.deepStrictEqual(this.resolvedNetworks.shouldNotBeOverridden, expectedConfig)
         })
 
@@ -128,12 +133,12 @@ describe('local networks config plugin', function() {
           })
         })
 
-        it('should extend project config with local config prioritizing project config', function() {
+        it('should extend project config with local config prioritizing local config', function() {
           assert.deepStrictEqual(this.resolvedNetworks.shouldBePartiallyExtended, {
             ...DEFAULTS,
             ...localConfig.defaultConfig,
-            ...localConfig.networks.shouldBePartiallyExtended,
-            ...this.userNetworks.shouldBePartiallyExtended
+            ...this.userNetworks.shouldBePartiallyExtended,
+            ...localConfig.networks.shouldBePartiallyExtended
           })
         })
 

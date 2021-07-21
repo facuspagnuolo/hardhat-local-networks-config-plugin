@@ -3,7 +3,7 @@
 
 # hardhat-local-networks-config-plugin
 
-Allow loading network configs for Hardhat projects in home file 
+Allow loading network configs for Hardhat projects from external file.
 
 ## What
 
@@ -75,9 +75,9 @@ Where `NetworksConfig` and `NetworkConfig` are based types defined by Hardhat.
 In case there is a conflict between any of the local network configs, the default one, or the ones defined in your
 project, the following list of priorities will be enforced:
 
-1. Project network specific configuration
-2. Local network specific configuration
-3. Local default network configuration (`~/.hardhat/networks.json`)
+1. Local network specific configuration (`localNetworksConfig`).
+2. Project network specific configuration.
+3. Default local network configuration (`~/.hardhat/networks.json`).
 
 A local configuration file could look as follows:
 

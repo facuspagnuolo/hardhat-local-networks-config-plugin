@@ -24,8 +24,8 @@ extendConfig((hardhatConfig: HardhatConfig, userConfig: HardhatUserConfig): void
       homeLocalNetworksConfig.defaultConfig,
       homeLocalNetworksConfig.networks[networkName] || {},
       localNetworksConfig.defaultConfig,
+      userNetworkConfig as object,
       localNetworksConfig.networks[networkName] || {},
-      userNetworkConfig as object
     ]) as NetworkConfig)
   })
 
