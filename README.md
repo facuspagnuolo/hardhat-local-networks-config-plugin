@@ -65,12 +65,12 @@ The local configuration file should support the following interface, any other f
 
 ```ts
 export interface LocalNetworksConfig {
-  networks?: NetworksConfig
-  defaultConfig?: NetworkConfig
+  networks?: NetworksUserConfig
+  defaultConfig?: NetworkUserConfig
 }
 ```
 
-Where `NetworksConfig` and `NetworkConfig` are based types defined by Hardhat.
+Where `NetworksUserConfig` and `NetworkUserConfig` are base types defined by Hardhat.
 
 In case there is a conflict between any of the local network configs, the default one, or the ones defined in your
 project, the following list of priorities will be enforced:
