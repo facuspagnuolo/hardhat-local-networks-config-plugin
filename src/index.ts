@@ -59,7 +59,7 @@ export function parseLocalNetworksConfigPath(userConfig: HardhatUserConfig): str
 }
 
 export function getDefaultLocalNetworksConfigPaths() {
-  return HARDHAT_NETWORK_DEFAULT_CONFIG_FILES.map(file => path.join(getLocalConfigDir(), file));
+  return HARDHAT_NETWORK_DEFAULT_CONFIG_FILES.map(file => path.join(getLocalConfigDir(), file))
 }
 
 export function getLocalConfigDir() {
