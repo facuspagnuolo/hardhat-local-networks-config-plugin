@@ -53,11 +53,9 @@ export function parseLocalNetworksConfigPath(userConfig: HardhatUserConfig): str
     return localNetworksConfigPath
   }
 
-  for (const defaultPath in getDefaultLocalNetworksConfigPaths()) {
-    if (fs.existsSync(defaultPath)) return defaultPath;
-  }
-
-  return undefined;
+  const foundPaths = getDefaultLocalNetworksConfigPaths().filter(fs.existsSync)
+  if (foundPaths.length > 1) throw Error(`Multiple default config files found: ${foundPaths.join(', ')}. Please pick one`)
+  return foundPaths.length === 1 ? foundPaths[0] : undefined
 }
 
 export function getDefaultLocalNetworksConfigPaths() {
