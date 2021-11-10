@@ -1,8 +1,10 @@
 import fs from 'fs'
 import path from 'path'
-import { homedir } from 'os'
 import deepmerge from 'deepmerge'
+
+import { homedir } from 'os'
 import { extendConfig } from 'hardhat/config'
+import { HardhatPluginError } from 'hardhat/plugins'
 import { HardhatConfig, NetworkConfig, NetworksConfig, HardhatUserConfig } from 'hardhat/types'
 
 const HARDHAT_CONFIG_DIR = '.hardhat'
@@ -54,7 +56,7 @@ export function parseLocalNetworksConfigPath(userConfig: HardhatUserConfig): str
   }
 
   const foundPaths = getDefaultLocalNetworksConfigPaths().filter(fs.existsSync)
-  if (foundPaths.length > 1) throw Error(`Multiple default config files found: ${foundPaths.join(', ')}. Please pick one`)
+  if (foundPaths.length > 1) fail(`Multiple default config files found: ${foundPaths.join(', ')}. Please pick one.`)
   return foundPaths.length === 1 ? foundPaths[0] : undefined
 }
 
@@ -64,4 +66,8 @@ export function getDefaultLocalNetworksConfigPaths() {
 
 export function getLocalConfigDir() {
   return path.join(homedir(), HARDHAT_CONFIG_DIR)
+}
+
+function fail(message: string): void {
+  throw new HardhatPluginError('hardhat-local-networks-config-plugin', message)
 }
