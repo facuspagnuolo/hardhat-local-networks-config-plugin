@@ -3,7 +3,7 @@
 
 # hardhat-local-networks-config-plugin
 
-Allow loading network configs for Hardhat projects in home file 
+Allow loading network configs for Hardhat projects in home file
 
 ## What
 
@@ -55,7 +55,7 @@ module.exports = {
 }
 ```
 
-In case a `localNetworksConfig` is not provided, the plugin will try to read it from `~/.hardhat/networks.json`.
+In case a `localNetworksConfig` is not provided, the plugin will try to read it from `~/.hardhat/networks.json`, `~/.hardhat/networks.js` or `~/.hardhat/networks.ts`.
 
 Note that both JS/TS and JSON formats are supported.
 
