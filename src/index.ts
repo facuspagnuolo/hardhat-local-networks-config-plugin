@@ -4,7 +4,7 @@ import { homedir } from 'os'
 import deepmerge from 'deepmerge'
 import { extendConfig } from 'hardhat/config'
 import { HardhatConfig, NetworkConfig, NetworksConfig, HardhatUserConfig } from 'hardhat/types'
-import "./type-extensions"
+import './type-extensions'
 
 const HARDHAT_CONFIG_DIR = '.hardhat'
 const HARDHAT_NETWORK_CONFIG_FILE = 'networks.json'
