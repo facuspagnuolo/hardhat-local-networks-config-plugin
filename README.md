@@ -99,8 +99,3 @@ A local configuration file could look as follows:
   }
 }
 ```
-
-## TypeScript support
-
-You need to add this to your `tsconfig.json`'s `files` array: 
-`"node_modules/hardhat-local-networks-config-plugin/src/type-extensions.d.ts"`
