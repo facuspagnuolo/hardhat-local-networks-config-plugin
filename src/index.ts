@@ -7,6 +7,10 @@ import { extendConfig } from 'hardhat/config'
 import { HardhatPluginError } from 'hardhat/plugins'
 import { HardhatConfig, NetworkConfig, NetworksConfig, HardhatUserConfig } from 'hardhat/types'
 
+// This import is needed to let the TypeScript compiler know that it should include your type
+// extensions in your npm package's types file.
+import './type-extensions'
+
 const HARDHAT_CONFIG_DIR = '.hardhat'
 const HARDHAT_NETWORK_DEFAULT_CONFIG_FILES = ['networks.json', 'networks.js', 'networks.ts']
 
